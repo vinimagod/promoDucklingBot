@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.5"
+  },
+  "name": "botdiscord",
+  "version": "1.0.0",
+  "description": "bot do discord para verificar jogos em promocao",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bot-discord"
+  ],
+  "author": "Vinicius M Godinho",
+  "license": "ISC"
+}
