@@ -7,6 +7,6 @@ module.exports = {
         .setDescription("Envia o Repositório do GitHub desse projeto"),
 
     async execute(interaction) {
-        await interaction.reply("https://github.com/vinimagod/Lista-Telefonica")
+        await interaction.reply("https://github.com/vinimagod/promoDucklingBot/blob/main/README.md")
     }
 }
