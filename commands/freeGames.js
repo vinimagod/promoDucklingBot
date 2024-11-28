@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require("discord.js");
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 // Função reutilizável para buscar e enviar jogos gratuitos
 async function fetchFreeGames(channelOrInteraction) {
@@ -13,26 +13,38 @@ async function fetchFreeGames(channelOrInteraction) {
 
         const data = await response.json();
         if (data.length === 0) {
-            await channelOrInteraction.reply
-                ? channelOrInteraction.editReply("Nenhum jogo gratuito encontrado no momento.")
-                : channelOrInteraction.send("Nenhum jogo gratuito encontrado no momento.");
+            const message = "Nenhum jogo gratuito encontrado no momento.";
+            await sendReply(channelOrInteraction, message);
             return;
         }
 
-        const deals = data.map(game => {
+        // Mapeia cada jogo para criar um embed
+        const embeds = data.map(game => {
             const storeName = game.storeID === '1' ? 'Steam' : 'Epic Games';
-            return `🎮 **${game.title}**\n🛒 Loja: ${storeName}\n💰 Preço atual: Gratuito! (Preço normal: ${game.normalPrice})\n`;
-        }).join("\n");
 
-        await channelOrInteraction.reply
-            ? channelOrInteraction.editReply(deals)
-            : channelOrInteraction.send(deals);
+            return new EmbedBuilder()
+                .setColor(0x00FF00)  // Define a cor verde
+                .setTitle(game.title)  // Nome do jogo
+                .setURL(`https://store.steampowered.com/app/${game.steamAppID || ''}`)  // Link para o jogo (caso exista o steamAppID)
+                .setDescription(`🛒 **Loja:** ${storeName}\n💰**Preço atual:**${game.salePrice}\n💰**Preço normal:**${game.normalPrice}`)
+                .setImage(game.thumb);  // Adiciona a imagem do jogo
+        });
+
+        await sendReply(channelOrInteraction, { embeds });
 
     } catch (error) {
         console.error(`Erro ao buscar dados: ${error.message}`);
-        await channelOrInteraction.reply
-            ? channelOrInteraction.editReply("Ocorreu um erro ao buscar os jogos gratuitos. Tente novamente mais tarde.")
-            : channelOrInteraction.send("Ocorreu um erro ao buscar os jogos gratuitos. Tente novamente mais tarde.");
+        const message = "Ocorreu um erro ao buscar os jogos gratuitos. Tente novamente mais tarde.";
+        await sendReply(channelOrInteraction, message);
+    }
+}
+
+// Função auxiliar para enviar respostas no canal ou interação
+async function sendReply(channelOrInteraction, content) {
+    if (channelOrInteraction.reply) {
+        await channelOrInteraction.editReply(content);
+    } else {
+        await channelOrInteraction.send(content);
     }
 }
 

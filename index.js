@@ -32,8 +32,8 @@ client.once(Events.ClientReady, readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 
     // Agendamento semanal: segunda-feira às 10h
-    cron.schedule('*/2 * * * *', async () => {  // Ajuste do horário conforme necessário (utilizando o padrão do node-cron)
-        const channelId = '959137194352713749';  // Substitua pelo ID do seu canal
+    cron.schedule('* 8 * * 5', async () => {  // Ajuste do horário conforme necessário (utilizando o padrão do node-cron)
+        const channelId = '1108477729340395612';  // Substitua pelo ID do seu canal
         const channel = await client.channels.fetch(channelId);
 
         if (channel && channel instanceof TextChannel) {
