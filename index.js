@@ -1,4 +1,3 @@
-// Require the necessary discord.js classes
 const { Client, Events, GatewayIntentBits, Collection, TextChannel } = require('discord.js');
 const cron = require('node-cron');
 
@@ -27,11 +26,11 @@ for (const file of commandFiles) {
     }
 }
 
-// Log in to Discord with your client's token
+// Log in no Discord com o client's token
 client.once(Events.ClientReady, readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 
-    // Agendamento semanal: segunda-feira às 10h
+    // Agendamento semanal: Sexta-feira às 8h
     cron.schedule('* 8 * * 5', async () => {  // Ajuste do horário conforme necessário (utilizando o padrão do node-cron)
         const channelId = '1108477729340395612';  // Substitua pelo ID do seu canal
         const channel = await client.channels.fetch(channelId);
