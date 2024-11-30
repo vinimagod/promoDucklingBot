@@ -1,4 +1,3 @@
-// Require the necessary discord.js classes
 const { Client, Events, GatewayIntentBits, Collection, TextChannel } = require('discord.js');
 const cron = require('node-cron');
 
@@ -10,10 +9,8 @@ const { TOKEN } = process.env;
 // Importação dos comandos
 const fs = require("node:fs");
 const path = require("node:path");
-
 const commandsPath = path.join(__dirname, "commands");
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith(".js"));
-
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.commands = new Collection();
 
@@ -27,16 +24,18 @@ for (const file of commandFiles) {
     }
 }
 
-// Log in to Discord with your client's token
+// Log in no discord
 client.once(Events.ClientReady, readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 
-    // Agendamento semanal: segunda-feira às 10h
-    cron.schedule('* 8 * * 5', async () => {  // Ajuste do horário conforme necessário (utilizando o padrão do node-cron)
+    // Agendamento semanal: sexta-feira às 8h
+    cron.schedule('* * * * *', async () => {  // Ajuste do horário conforme necessário (utilizando o padrão do node-cron)  * 8 * * 5
         const channelId = '1108477729340395612';  // Substitua pelo ID do seu canal
         const channel = await client.channels.fetch(channelId);
 
         if (channel && channel instanceof TextChannel) {
+
+            await channel.send('@everyone Confira os jogos gratuitos da semana!');
             // Importa a função diretamente do freegames.js
             const { fetchFreeGames } = require('./commands/freeGames');
             await fetchFreeGames(channel);

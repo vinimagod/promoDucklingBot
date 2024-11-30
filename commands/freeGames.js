@@ -29,8 +29,11 @@ async function fetchFreeGames(channelOrInteraction) {
                 .setDescription(`🛒 **Loja:** ${storeName}\n💰**Preço atual:**${game.salePrice}\n💰**Preço normal:**${game.normalPrice}`)
                 .setImage(game.thumb);  // Adiciona a imagem do jogo
         });
+        // Menciona o usuário que usou o comando
+        const userMention = channelOrInteraction.user ? `<@${channelOrInteraction.user.id}>` : '';
+        const message = `Aqui estão os jogos gratuitos da semana, ${userMention}:`;
 
-        await sendReply(channelOrInteraction, { embeds });
+        await sendReply(channelOrInteraction, { content: message, embeds });
 
     } catch (error) {
         console.error(`Erro ao buscar dados: ${error.message}`);
