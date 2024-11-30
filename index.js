@@ -24,17 +24,18 @@ for (const file of commandFiles) {
     }
 }
 
-// Log in no discord
+// Log in no Discord com o client's token
 client.once(Events.ClientReady, readyClient => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 
-    // Agendamento semanal: sexta-feira às 8h
-    cron.schedule('* * * * *', async () => {  // Ajuste do horário conforme necessário (utilizando o padrão do node-cron)  * 8 * * 5
+    // Agendamento semanal: Sexta-feira às 8h
+    cron.schedule('* 8 * * 5', async () => {  // Ajuste do horário conforme necessário (utilizando o padrão do node-cron)
         const channelId = '1108477729340395612';  // Substitua pelo ID do seu canal
         const channel = await client.channels.fetch(channelId);
 
         if (channel && channel instanceof TextChannel) {
 
+            // Marca @everyone ao soltar a mensagem automatica
             await channel.send('@everyone Confira os jogos gratuitos da semana!');
             // Importa a função diretamente do freegames.js
             const { fetchFreeGames } = require('./commands/freeGames');
